@@ -7,6 +7,8 @@ Parse any Solidity contract passing either the source code of the contract or th
 
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Methods](#methods)
+  - [Options](#options)
   - [Supported Networks](#supported-networks)
     - [How to get an API key](#how-to-get-an-api-key)
 
