@@ -242,6 +242,7 @@ Keyword
   / TryToken
   / CatchToken
   / EmitToken
+  / UnicodeToken
   
 Literal
   = BooleanLiteral
@@ -555,6 +556,7 @@ SzaboToken      = "szabo"      !IdentifierPart
 ThisToken       = "this"       !IdentifierPart
 ThrowToken      = "throw"      !IdentifierPart
 TrueToken       = "true"       !IdentifierPart
+UnicodeToken    = "unicode"    !IdentifierPart
 UsingToken      = "using"      !IdentifierPart
 VarToken        = "var"        !IdentifierPart
 WeeksToken      = "weeks"      !IdentifierPart
