@@ -80,11 +80,11 @@ const defaultOptions = {
 }
 
 module.exports = class SolidityParser {
-  constructor(network, api_keys) {
+  constructor({network, api_keys}) {
     if(Number.isInteger(network)) {
       network = parseNetwork(network);
     }
-    if(!KNOWN_NETWORKS[network]) {
+    if(network && !KNOWN_NETWORKS[network]) {
       throw new Error(`Unknown network ${network}. Use one of the following: ${Object.keys(KNOWN_NETWORKS).join(", ")}`);
     }
     this.network = network;
@@ -93,14 +93,13 @@ module.exports = class SolidityParser {
   }
 
   async getContractCode(address) {
-    let res = await fetch(`https://${KNOWN_NETWORKS[this.network]}/api?module=contract&action=getsourcecode&address=${address}&apikey=${this.api_keys[Math.floor(this.api_keys.length * Math.random())]}`)
-    res = await res.json()
-    if(res.status === "0") throw new Error(res.result)
+    if(!this.network) throw new Error("Network is not provided");
+    let res = await fetch(`https://${KNOWN_NETWORKS[this.network]}/api?module=contract&action=getsourcecode&address=${address}&apikey=${this.api_keys[Math.floor(this.api_keys.length * Math.random())]}`);
+    res = await res.json();
+    if(res.status === "0") throw new Error(res.result);
     try {
-      let code = res.result[0].SourceCode
-      if(code === undefined) {
-        console.log(res)
-      }
+      let code = res.result[0].SourceCode;
+      if(code === '') throw new Error(`Contract source code at address ${address} is not verified`);
       if(code.startsWith('{{')) {
         code = JSON.parse(code.substring(1, code.length - 1));
         code = Object.values(code.sources).map(source => source.content).join('\n');
@@ -108,9 +107,9 @@ module.exports = class SolidityParser {
         code = JSON.parse(code);
         code = Object.values(code).map(source => source.content).join('\n');
       }
-      return code
+      return code;
     } catch(err) {
-      throw err
+      throw err;
     }
   }
 

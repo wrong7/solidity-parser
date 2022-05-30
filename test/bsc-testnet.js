@@ -1,7 +1,7 @@
 "use strict";
 
 const SolidityParser = require("../index.js");
-const parser = new SolidityParser(97, "")
+const parser = new SolidityParser({network: 97, api_keys: ""});
 
 describe("Built Parser (Binance Smart Chain - Testnet)", function() {
     it("Parses documentation examples without throwing an error", function() {

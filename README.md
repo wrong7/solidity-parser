@@ -8,7 +8,7 @@ Parse any Solidity contract passing either the source code of the contract or th
 - [Installation](#installation)
 - [Usage](#usage)
   - [Supported Networks](#supported-networks)
-    - [How to get an API key](#how-to-get-an-api-key) 
+    - [How to get an API key](#how-to-get-an-api-key)
 
 # Installation
 ```bash
@@ -22,10 +22,7 @@ npm install solidityparser
 ```js
 const SolidityParser = require("solidityparser");
 
-const network = 1; // Ethereum mainnet
-const explorer_api = "EYUZIES8FZ7TFK581OERKZ0LFTN3FC0BOT";
-
-const parser = new SolidityParser(network, explorer_api);
+const parser = new SolidityParser();
 
 let parseFromFile = parser.parseFile("./MyContract.sol");
 
@@ -35,25 +32,32 @@ contract MyContract {
   function foo(){}
 }
 `);
+```
+A network can be specified alongside an API-key from the explorer.
+```js
+const SolidityParser = require("solidityparser");
 
-let parseFromAddress = parser.parseAddress('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
+const parser = new SolidityParser({
+  network: 1, // Ethereum mainnet
+  api_keys: "EYUZIES8FZ7TFK581OERKZ0LFTN3FC0BOT"
+});
+
+let parseFromAddress = parser.parseAddress("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
   .then(parsed => {
     // Parsed contract
   })
   .catch(error => {
     throw error;
   });
-
-
 ```
 * **NOTE:** `parseAddress` is an asynchronous function.
 
 ## Methods
 |Method|Description|
 |---|---|
-|`SolidityParser.parse(code: String, options: Object)`|Parses a solidity contract sent as a String|
-|`SolidityParser.parseFile(file: String, options: Object)`|Parses a solidity contract sent as a String|
-|`SolidityParser.parseAddress(address: String, options: Object)`|Parses a solidity contract sent as a String|
+|`SolidityParser.parse(code: String, options: Object)`|Parses a solidity contract sent as a String.|
+|`SolidityParser.parseFile(file: String, options: Object)`|Parses a solidity contract from a file.|
+|`SolidityParser.parseAddress(address: String, options: Object)`|Parses a solidity contract sent as an address. This method needs an [API-key](#how-to-get-an-api-key) from the explorer.|
 
 ## Options
 |Option|Default|Description|
@@ -64,10 +68,16 @@ let parseFromAddress = parser.parseAddress('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C
 Any of the following networks can be initialized to the parser.
 ```js
 // Using the name of the network
-const parser = new SolidityParser("mainnet", explorer_api);
+const parser = new SolidityParser({
+  network: "mainnet",
+  api_keys: explorer_api
+});
 
 // Using the id of the network
-const parser = new SolidityParser(56, explorer_api);
+const parser = new SolidityParser({
+  network: 56,
+  api_keys: explorer_api
+});
 ```
 |Network|Name|Id|
 |:---:|:---:|:---:|
@@ -101,5 +111,8 @@ If you were to use more than the limit, consider upgrading your plan, or using a
 
 ```js
 const myKeys = ["DEHMWMJ3UZRIWDM2IFB7P1VVBGQ2FW290Z", "AWNAHFGIIJDDUUEUSPUEPG8HOU3AKHCL31", "CYVO7LDGQSHLW9RIORWA9VMBNZA687DKHZ"];
-const parser = new SolidityParser("mainnet", myKeys);
+const parser = new SolidityParser({
+  network: "mainnet",
+  api_keys: myKeys
+});
 ```
