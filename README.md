@@ -1,13 +1,14 @@
 # Solidity Parser
 ![version](https://img.shields.io/npm/v/solidityparser "Version")
 ![npm](https://img.shields.io/npm/dt/solidityparser.svg "Total Downloads")
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/wrong7/solidityparser.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wrong7/solidityparser/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/wrong7/solidityparser.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wrong7/solidityparser/context:javascript)
+[![License](https://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
+
 Parse any Solidity contract passing either the source code of the contract or the address of a verified deployed contract in a supported blockchain, which will retrieve the source code from its explorer using the API of their block explorer site.
 
 - [Installation](#installation)
 - [Usage](#usage)
   - [Supported Networks](#supported-networks)
+    - [How to get an API key](#how-to-get-an-api-key) 
 
 # Installation
 ```bash
@@ -35,7 +36,7 @@ contract MyContract {
 }
 `);
 
-let parseFromAddress = parser.parseContract('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
+let parseFromAddress = parser.parseAddress('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
   .then(parsed => {
     // Parsed contract
   })
@@ -45,7 +46,19 @@ let parseFromAddress = parser.parseContract('0xC02aaA39b223FE8D0A0e5C4F27eAD9083
 
 
 ```
-* **NOTE:** `parseContract` is an asynchronous function.
+* **NOTE:** `parseAddress` is an asynchronous function.
+
+## Methods
+|Method|Description|
+|---|---|
+|`SolidityParser.parse(code: String, options: Object)`|Parses a solidity contract sent as a String|
+|`SolidityParser.parseFile(file: String, options: Object)`|Parses a solidity contract sent as a String|
+|`SolidityParser.parseAddress(address: String, options: Object)`|Parses a solidity contract sent as a String|
+
+## Options
+|Option|Default|Description|
+|---|---|---|
+|`elementPosition`|`true`|Returns the position _start_ and _end_ of any statement or declaration found in the code. Set to `false` if you want, for example, to compare a specific part of the code with the same part of another contract.|
 
 ## Supported Networks
 Any of the following networks can be initialized to the parser.
@@ -76,7 +89,7 @@ const parser = new SolidityParser(56, explorer_api);
 |Fantom Testnet| `fantom-testnet` | `4002` |
 
 ### How to get an API key
-In order to use the `parseContract` feature, you must own an account in the desired blockchain [explorer provided by _Etherscan_](https://etherscan.io/eaas).
+In order to use the `parseAddress` feature, you must own an account in the desired blockchain [explorer provided by _Etherscan_](https://etherscan.io/eaas).
 Once you have an account, navigate to your profile, and create an API key under the _API-KEYs_ section.
 
 Keep in mind that free accounts have limited API usage:

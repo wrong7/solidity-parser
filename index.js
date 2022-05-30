@@ -76,7 +76,6 @@ const parseNetwork = (network) => {
 }
 
 const defaultOptions = {
-  rebuild: false,
   elementPosition: true
 }
 
@@ -90,19 +89,24 @@ module.exports = class SolidityParser {
     }
     this.network = network;
     this.api_keys = Array.isArray(api_keys) ? api_keys : [api_keys];
+    this.parser = builtParser;
   }
 
-  async getContract(address) {
+  async getContractCode(address) {
     let res = await fetch(`https://${KNOWN_NETWORKS[this.network]}/api?module=contract&action=getsourcecode&address=${address}&apikey=${this.api_keys[Math.floor(this.api_keys.length * Math.random())]}`)
     res = await res.json()
+    if(res.status === "0") throw new Error(res.result)
     try {
       let code = res.result[0].SourceCode
+      if(code === undefined) {
+        console.log(res)
+      }
       if(code.startsWith('{{')) {
-        code = JSON.parse(code.substring(1, code.length - 1))
-        code = Object.values(code.sources).map(source => source.content).join('\n')
+        code = JSON.parse(code.substring(1, code.length - 1));
+        code = Object.values(code.sources).map(source => source.content).join('\n');
       } else if(code.startsWith('{')) {
-        code = JSON.parse(code)
-        code = Object.values(code).map(source => source.content).join('\n')
+        code = JSON.parse(code);
+        code = Object.values(code).map(source => source.content).join('\n');
       }
       return code
     } catch(err) {
@@ -110,32 +114,30 @@ module.exports = class SolidityParser {
     }
   }
 
-  getParser(options = defaultOptions) {
-    if (options.rebuild) {
-      return peggy.generate(fs.readFileSync(`./solidity.peggy`, {encoding: "utf8"}));
-    } else {
-      return builtParser
-    }
-  }
-  parse(source, options = defaultOptions) {
-    let parser = this.getParser(options);
+  parse(source, options = null) {
+    if(options && !options instanceof Object) throw new Error('Options must be an object');
+    options = {...defaultOptions, ...options};
     let result;
     try {
-      result = parser.parse(source);
+      result = this.parser.parse(source);
     } catch (e) {
-      if(e instanceof parser.SyntaxError) {
+      if(e instanceof this.parser.SyntaxError) {
         e.message += " Line: " + e.location.start.line + ", Column: " + e.location.start.column;
       }
       throw e;
     }
+    if(!options.elementPosition) {
+      return JSON.parse(JSON.stringify(result).replace(/,"start":[0-9]+,"end":[0-9]+/g,''));
+    }
     return result;
   }
-  parseFile(file, options = defaultOptions) {
+
+  parseFile(file, options) {
     return this.parse(fs.readFileSync(path.resolve(file), {encoding: "utf8"}), options);
   }
-  async parseContract(address, options = defaultOptions) {
-    const code = await this.getContract(address);
-    console.log(code.length)
+
+  async parseAddress(address, options) {
+    const code = await this.getContractCode(address);
     return this.parse(code, options);
   }
 }
