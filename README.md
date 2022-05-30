@@ -1,6 +1,6 @@
-# Solidity Parser
-![version](https://img.shields.io/npm/v/solidityparser "Version")
-![npm](https://img.shields.io/npm/dt/solidityparser.svg "Total Downloads")
+# sol-parser
+![version](https://img.shields.io/npm/v/sol-parser "Version")
+![npm](https://img.shields.io/npm/dt/sol-parser.svg "Total Downloads")
 [![License](https://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
 Parse any Solidity contract passing either the source code of the contract or the address of a verified deployed contract in a supported blockchain, which will retrieve the source code from its explorer using the API of their block explorer site.
@@ -22,7 +22,7 @@ npm install solidityparser
 `solidityparser` provides a class that must be initialized with the network name or id of your choice.
 
 ```js
-const SolidityParser = require("solidityparser");
+const SolidityParser = require("sol-parser");
 
 const parser = new SolidityParser();
 
@@ -37,11 +37,11 @@ contract MyContract {
 ```
 A network can be specified alongside an API-key from the explorer.
 ```js
-const SolidityParser = require("solidityparser");
+const SolidityParser = require("sol-parser");
 
 const parser = new SolidityParser({
   network: 1, // Ethereum mainnet
-  api_keys: "EYUZIES8FZ7TFK581OERKZ0LFTN3FC0BOT"
+  api_keys: "EYUZIES8FZ7TFK581OERKZ0LFTN3FC0BOT" // API-key on etherscan.io
 });
 
 let parseFromAddress = parser.parseAddress("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
@@ -112,6 +112,8 @@ Keep in mind that free accounts have limited API usage:
 If you were to use more than the limit, consider upgrading your plan, or using an array of API keys which will rotate randomly on each request:
 
 ```js
+const SolidityParser = require("sol-parser");
+
 const myKeys = ["DEHMWMJ3UZRIWDM2IFB7P1VVBGQ2FW290Z", "AWNAHFGIIJDDUUEUSPUEPG8HOU3AKHCL31", "CYVO7LDGQSHLW9RIORWA9VMBNZA687DKHZ"];
 const parser = new SolidityParser({
   network: "mainnet",
