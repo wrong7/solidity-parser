@@ -1,0 +1,37 @@
+{
+  "name": "solidity-parser-peg",
+  "version": "1.0.0",
+  "description": "Parse any contract from any EVM blockchain using the API of their block explorer site",
+  "main": "index.js",
+  "scripts": {
+    "build": "mkdir -p build && peggy --cache -o ./build/parser.js ./solidity.peggy",
+    "test": "mocha --timeout 15000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wrong7/solidity-parser.git"
+  },
+  "keywords": [
+    "solidity",
+    "parser",
+    "peggy",
+    "pegjs",
+    "evm",
+    "smart",
+    "contract"
+  ],
+  "author": "Mario Clavero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wrong7/solidity-parser/issues"
+  },
+  "homepage": "https://github.com/wrong7/solidity-parser#readme",
+  "devDependencies": {
+    "mocha": "^10.0.0"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "node-fetch": "^2.6.7",
+    "peggy": "^2.0.0"
+  }
+}
