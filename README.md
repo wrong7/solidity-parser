@@ -75,7 +75,7 @@ const parser = new SolidityParser(56, explorer_api);
 |Fantom| `fantom` | `250` |
 |Fantom Testnet| `fantom-testnet` | `4002` |
 
-#### How to get an API key
+### How to get an API key
 In order to use the `parseContract` feature, you must own an account in the desired blockchain [explorer provided by _Etherscan_](https://etherscan.io/eaas).
 Once you have an account, navigate to your profile, and create an API key under the _API-KEYs_ section.
 
@@ -88,5 +88,5 @@ If you were to use more than the limit, consider upgrading your plan, or using a
 
 ```js
 const myKeys = ["DEHMWMJ3UZRIWDM2IFB7P1VVBGQ2FW290Z", "AWNAHFGIIJDDUUEUSPUEPG8HOU3AKHCL31", "CYVO7LDGQSHLW9RIORWA9VMBNZA687DKHZ"];
-const parser = new SolidityParser("mainnet", explorer_api);
+const parser = new SolidityParser("mainnet", myKeys);
 ```
