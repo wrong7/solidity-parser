@@ -615,6 +615,7 @@ contract UsesTryCatch {
 contract Unicode {
   string public name;
   uint public age;
+  string private constant _symbol = unicode"$Akamaru"; 
   constructor() {
     name = unicode"💩"
     age = 1 ether;

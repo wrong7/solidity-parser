@@ -250,6 +250,7 @@ Literal
   / NumericLiteral
   / HexStringLiteral
   / StringLiteral
+  / UnicodeLiteral
   / VersionLiteral
 
 BooleanLiteral
@@ -341,6 +342,14 @@ StringLiteral "string"
   / "'" chars:SingleStringCharacter* "'" {
       return { type: "Literal", value: chars.join(""), start: location().start.offset, end: location().end.offset };
     }
+
+UnicodeLiteral
+  = UnicodeToken __ value:StringLiteral {
+      return {
+        type: "Literal",
+        value: value
+      };
+  }
 
 HexStringLiteral
   = HexToken val:StringLiteral {

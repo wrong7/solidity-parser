@@ -1,6 +1,6 @@
 {
   "name": "sol-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Parse any contract from any EVM blockchain using the API of their block explorer site",
   "main": "index.js",
   "scripts": {
